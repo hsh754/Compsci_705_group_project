@@ -22,18 +22,6 @@ A full-stack survey demo with role-based access control.
 - Client: React 19, react-router-dom 7, axios
 - Server: Express 5, Mongoose 8, JSON Web Token, bcryptjs, dotenv, CORS
 
-#### Prerequisites 
-- IDE: **Visual Studio Code** or **JetBrains WebStorm**
-  - VS Code: [code.visualstudio.com](https://code.visualstudio.com/)
-  - WebStorm: [jetbrains.com/webstorm](https://www.jetbrains.com/webstorm/)
-- Node.js 与 npm（Install from the official website. LTS version is recommended）
-  - Node.js: [nodejs.org](https://nodejs.org/)
-  - Verify the version after installation：
-    - Windows PowerShell / macOS / Linux
-      ```bash
-      node -v
-      npm -v
-      ```
 
 #### Directory Structure
 ```
@@ -73,7 +61,19 @@ server/
     questionnaire.js
   config/db.js
 ```
-
+#### Prerequisites
+- IDE: **Visual Studio Code** or **JetBrains WebStorm**
+  - VS Code: [code.visualstudio.com](https://code.visualstudio.com/)
+  - WebStorm: [jetbrains.com/webstorm](https://www.jetbrains.com/webstorm/)
+- Node.js 与 npm（Install from the official website. LTS version is recommended）
+  - Node.js: [nodejs.org](https://nodejs.org/)
+  - Verify the version after installation：
+    - Windows PowerShell / macOS / Linux
+      ```bash
+      node -v
+      npm -v
+      ```
+      
 #### Environment Variables
 - Server (`server/.env`):
 ```
@@ -85,15 +85,15 @@ MONGODB_URI=your-atlas-connection-string
 
 #### Run (Windows PowerShell)
 PowerShell does not support `&&` by default. Use `;` to chain commands or run in separate terminals.
-- Start API:
+  - **Start Frontend**:
 ```powershell
 cd server 
 npm install
 npm run dev
 ```
-- Start Web:
+- **Start Backend**:
 ```powershell
-# new terminal
+# open a new terminal
 cd client 
 npm install 
 npm start
