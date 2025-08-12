@@ -14,7 +14,18 @@ if (process.env.MOCK === 'true') {
 
 const app = express();
 
-app.use(cors());
+// CORS configuration: allow frontend dev server and handle preflight
+const corsOptions = {
+  origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: false,
+};
+app.use(cors(corsOptions));
+// Ensure OPTIONS preflight gets the proper headers for any route
+// Note: In Express 5, do not use wildcard string in route for options handler.
+// Preflight will be handled automatically by the above cors middleware.
+
 app.use(express.json());
 
 app.use("/api", routes);
