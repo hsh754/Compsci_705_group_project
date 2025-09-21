@@ -81,7 +81,55 @@ PORT=5000
 JWT_SECRET=your-jwt-secret
 MONGODB_URI=your-atlas-connection-string
 ```
+#### Python Environment Setup
 
+This project requires **Python 3.10.6** to run the emotion recognition model inference.  
+Follow the steps below to set up the environment:
+
+1. **Install Python 3.10.6**
+  - **Windows**: Download and install from the [official Python download page](https://www.python.org/ftp/python/3.10.6/python-3.10.6-amd64.exe).
+  - **macOS**: Download and install from the [official Python download page](https://www.python.org/ftp/python/3.10.6/python-3.10.6-macos11.pkg).
+
+   Verify the installation:
+   ```bash
+   python --version
+   # or
+   python3 --version
+   ```
+   Expected output:
+   ```
+   Python 3.10.6
+   ```
+
+2. **Clone the Model Repository**
+   In the project root directory, clone the required emotion recognition repository:
+   ```bash
+   git clone https://github.com/gianscuri/Emotion-Recognition_SER-FER_RAVDESS.git
+   cd Emotion-Recognition_SER-FER_RAVDESS
+   ```
+
+3. **Create a Virtual Environment (named `emotion`)**
+   Use Python 3.10.6 to create and activate a dedicated virtual environment:
+  - **Windows (PowerShell)**:
+    ```powershell
+    py -3.10 -m venv .venv/emotion
+    .venv\emotion\Scripts\activate
+    ```
+  - **macOS / Linux (bash/zsh)**:
+    ```bash
+    python3.10 -m venv .venv/emotion
+    source .venv/emotion/bin/activate
+    ```
+
+   Once activated, your terminal should show the prefix `(emotion)`.
+
+4. **Install Dependencies**
+   Inside the activated virtual environment, install all required packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+   The provided `requirements.txt` file ensures a fully reproducible environment.
 
 #### Run (Windows PowerShell)
 PowerShell does not support `&&` by default. Use `;` to chain commands or run in separate terminals.

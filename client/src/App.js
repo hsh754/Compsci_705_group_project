@@ -50,9 +50,10 @@ export default function App() {
                 <Navbar />
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-                    <Route path="/questionnaire" element={<PrivateRoute><Questionnaire /></PrivateRoute>} />
-                    <Route path="/results" element={<PrivateRoute><Results /></PrivateRoute>} />
+                    {/* 普通用户可以直接访问这些页面，不需要登录 */}
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/questionnaire" element={<Questionnaire />} />
+                    <Route path="/results" element={<Results />} />
                     <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
                     <Route path="/register" element={<PublicOnlyRoute><RegisterPage /></PublicOnlyRoute>} />
                     <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />

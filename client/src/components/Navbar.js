@@ -130,8 +130,10 @@ export default function Navbar() {
                         </div>
                     ) : (
                         <>
-                            <NavLink to="/login" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Log in</NavLink>
-                            <NavLink to="/register" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Register</NavLink>
+                            <NavLink to="/dashboard" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Dashboard</NavLink>
+                            <NavLink to="/questionnaire" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Questionnaires</NavLink>
+                            <NavLink to="/results" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Results</NavLink>
+                            <NavLink to="/login" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Admin Login</NavLink>
                         </>
                     )}
                 </div>

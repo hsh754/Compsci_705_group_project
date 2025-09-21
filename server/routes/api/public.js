@@ -1,21 +1,41 @@
 import express from "express";
-import { protect } from "../../middleware/auth.js";
+import {
+  listPublicQuestionnaires,
+  getQuestionnaireForAnswering
+} from "../../controllers/questionnaireController.js";
+import {
+  submitAnswers,
+  submitAnswersWithVideos,
+  listSubmissions,
+  uploadVideo,
+  getSubmissionDetail,
+  getSubmissionVideos,
+  upload
+} from "../../controllers/submissionController.js";
 
 const router = express.Router();
 
-// User-side placeholder endpoints
-router.get("/user/overview", protect, (req, res) => {
+// User-side placeholder endpoints - 普通用户可以直接访问，无需登录
+router.get("/user/overview", (req, res) => {
   res.json({ completed: 3, pending: 1, lastActiveAt: new Date().toISOString() });
 });
 
-router.get("/user/questionnaires", protect, (req, res) => {
-  res.json([
-    { id: "q1", title: "Emotion Recognition Assessment", version: "1.0", items: 10 },
-    { id: "q3", title: "Attention Test", version: "0.9", items: 8 },
-  ]);
-});
+// Questionnaire endpoints
+router.get("/user/questionnaires", listPublicQuestionnaires);
+router.get("/user/questionnaires/:id", getQuestionnaireForAnswering);
 
-router.get("/user/results", protect, (req, res) => {
+// Submission endpoints
+router.post("/user/questionnaires/:id/submit", submitAnswers);
+router.post("/user/questionnaires/:id/submitWithVideos", upload.array("videos", 20), submitAnswersWithVideos);
+router.get("/user/submissions", listSubmissions);
+router.get("/user/submissions/:id", getSubmissionDetail);
+router.get("/user/submissions/:id/videos", getSubmissionVideos);
+
+// Video upload
+router.post("/user/questionnaires/:id/video", upload.single("video"), uploadVideo);
+
+// Placeholder endpoints
+router.get("/user/results", (req, res) => {
   res.json([
     { id: "r1", questionnaireId: "q1", submittedAt: new Date().toISOString(), score: 78 },
     { id: "r2", questionnaireId: "q3", submittedAt: new Date().toISOString(), score: 85 },

@@ -32,8 +32,8 @@ export default function LoginPage() {
     return (
         <div className="auth-shell">
             <div className="auth-card">
-                <h1 className="auth-title">Log in</h1>
-                <p className="auth-sub">Welcome back</p>
+                <h1 className="auth-title">Admin Login</h1>
+                <p className="auth-sub">Administrator access only</p>
 
                 <form onSubmit={onSubmit} className="auth-form">
                     <label>Username</label>
@@ -43,14 +43,14 @@ export default function LoginPage() {
                     <input name="password" type="password" value={form.password} onChange={onChange} required />
 
                     <button className="auth-btn" disabled={loading}>
-                        {loading ? "Logging in..." : "Log in"}
+                        {loading ? "Logging in..." : "Admin Login"}
                     </button>
 
                     {err && <div className="auth-error">{err}</div>}
                 </form>
 
                 <div className="auth-foot">
-                    Don't have an account? <Link to="/register">Register</Link>
+                    Need an admin account? <Link to="/register">Register</Link>
                 </div>
             </div>
         </div>

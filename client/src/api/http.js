@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const http = axios.create({
     baseURL: process.env.REACT_APP_API_BASE || "http://localhost:5000",
-    timeout: 15000,
+    timeout: 60000,
 });
 
 // Request interceptor: attach token automatically

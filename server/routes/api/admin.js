@@ -1,7 +1,16 @@
 import express from "express";
 import { protect, requireRole } from "../../middleware/auth.js";
+import multer from "multer";
+import {
+  listQuestionnaires,
+  uploadQuestionnaire,
+  getQuestionnaireDetail,
+  updateQuestionnaire,
+  deleteQuestionnaire
+} from "../../controllers/questionnaireController.js";
 
 const router = express.Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Admin overview (placeholder data)
 router.get("/overview", protect, requireRole("admin"), (req, res) => {
@@ -13,13 +22,12 @@ router.get("/overview", protect, requireRole("admin"), (req, res) => {
   });
 });
 
-// Questionnaire management list (placeholder)
-router.get("/questionnaires", protect, requireRole("admin"), (req, res) => {
-  res.json([
-    { id: "q1", title: "Customer Satisfaction", version: "1.0" },
-    { id: "q2", title: "Employee Engagement", version: "2.1" },
-  ]);
-});
+// Questionnaire management
+router.get("/questionnaires", protect, requireRole("admin"), listQuestionnaires);
+router.post("/questionnaires/upload", protect, requireRole("admin"), upload.single("file"), uploadQuestionnaire);
+router.get("/questionnaires/:id", protect, requireRole("admin"), getQuestionnaireDetail);
+router.patch("/questionnaires/:id", protect, requireRole("admin"), updateQuestionnaire);
+router.delete("/questionnaires/:id", protect, requireRole("admin"), deleteQuestionnaire);
 
 // Reports (placeholder)
 router.get("/reports", protect, requireRole("admin"), (req, res) => {

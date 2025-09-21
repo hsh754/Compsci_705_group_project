@@ -34,8 +34,8 @@ export default function RegisterPage() {
     return (
         <div className="auth-shell">
             <div className="auth-card">
-                <h1 className="auth-title">Create Account</h1>
-                <p className="auth-sub">Welcome! Let's evaluate questionnaires with confidence.</p>
+                <h1 className="auth-title">Admin Registration</h1>
+                <p className="auth-sub">Create administrator account for system management.</p>
 
                 <form onSubmit={onSubmit} className="auth-form">
                     <label>Username</label>
@@ -48,14 +48,14 @@ export default function RegisterPage() {
                     <input name="password" type="password" value={form.password} onChange={onChange} required />
 
                     <button className="auth-btn" disabled={loading}>
-                        {loading ? "Registering..." : "Register"}
+                        {loading ? "Registering..." : "Create Admin Account"}
                     </button>
 
                     {err && <div className="auth-error">{err}</div>}
                 </form>
 
                 <div className="auth-foot">
-                    Already have an account? <Link to="/login">Log in</Link>
+                    Already have an admin account? <Link to="/login">Log in</Link>
                 </div>
             </div>
         </div>
