@@ -10,6 +10,7 @@ import {
   uploadVideo,
   getSubmissionDetail,
   getSubmissionVideos,
+  getSubmissionAnalysis,
   upload
 } from "../../controllers/submissionController.js";
 
@@ -30,6 +31,7 @@ router.post("/user/questionnaires/:id/submitWithVideos", upload.array("videos", 
 router.get("/user/submissions", listSubmissions);
 router.get("/user/submissions/:id", getSubmissionDetail);
 router.get("/user/submissions/:id/videos", getSubmissionVideos);
+router.get("/user/submissions/:id/analysis", getSubmissionAnalysis);
 
 // Video upload
 router.post("/user/questionnaires/:id/video", upload.single("video"), uploadVideo);

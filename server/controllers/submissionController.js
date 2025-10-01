@@ -69,7 +69,7 @@ export const submitAnswers = async (req, res) => {
       }
     }
 
-    res.status(201).json({ success: true, id: sub._id, totalScore: total });
+    res.status(201).json({ success: true, id: sub._id, totalScore: total, resultUrl: `/result/${sub._id}`});
   } catch (err) {
     console.error('Submit answers error:', err);
     res.status(500).json({ error: "Failed to submit answers" });
@@ -154,6 +154,24 @@ export const getSubmissionVideos = async (req, res) => {
   } catch (err) {
     console.error('Get submission videos error:', err);
     res.status(500).json({ error: "Failed to fetch videos" });
+  }
+};
+
+// Get submission analysis (public)
+export const getSubmissionAnalysis = async (req, res) => {
+  try {
+    const submissionId = req.params.id;
+    const sub = await Submission.findById(submissionId);
+    if (!sub) return res.status(404).json({ error: "Not found" });
+
+    const analysis = await SubmissionAnalysis.findOne({ submissionId });
+    res.json({
+      submission: sub,
+      analysis: analysis || null
+    });
+  } catch (err) {
+    console.error('Get submission analysis error:', err);
+    res.status(500).json({ error: "Failed to fetch analysis" });
   }
 };
 
@@ -254,7 +272,17 @@ export const submitAnswersWithVideos = async (req, res) => {
 
           if (code === 0) {
             try {
-              emotionResults = JSON.parse(out.trim());
+              const raw = out.trim();
+              try {
+                emotionResults = JSON.parse(raw);
+              } catch (e1) {
+                // Sanitize non-JSON values like NaN/Infinity which Python might emit
+                const sanitized = raw
+                  .replace(/\bNaN\b/g, "null")
+                  .replace(/\bInfinity\b/g, "null")
+                  .replace(/\b-Infinity\b/g, "null");
+                emotionResults = JSON.parse(sanitized);
+              }
               resolve();
             } catch (e) {
               reject(new Error(`Parse Python JSON failed: ${e.message}\nRAW:\n${out}`));
@@ -299,7 +327,7 @@ export const submitAnswersWithVideos = async (req, res) => {
             return adjustedNorm * 3;  // back to score between range 0 to 3
           });
           adjustedTotal = adjustedScores.reduce((a, b) => a + b, 0);
-        }
+        }else {}
 
         // 存数据库
         await SubmissionAnalysis.create({
@@ -318,7 +346,7 @@ export const submitAnswersWithVideos = async (req, res) => {
       }
     }
 
-    res.status(201).json({ success: true, id: sub._id, totalScore: total, emotionResults,adjustedTotal});
+    res.status(201).json({ success: true, id: sub._id, totalScore: total, emotionResults, adjustedTotal,  resultUrl: `/result/${sub._id}`});
   } catch (err) {
     console.error("Submit answers with videos error:", err);
     res.status(500).json({ error: err.message || "Failed to submit answers" });

@@ -5,6 +5,7 @@ import AuthProvider, { useAuth } from "./context/AuthContext";
 import Dashboard from "./pages/Dashboard";
 import Questionnaire from "./pages/Questionnaire";
 import Results from "./pages/Results";
+import ResultDetail from "./pages/ResultDetail";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminQuestionnaires from "./pages/admin/AdminQuestionnaires";
 import AdminReports from "./pages/admin/AdminReports";
@@ -13,6 +14,7 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import Navbar from "./components/Navbar";
+import "./components/survey.css"
 
 function Nav() {
     const { user, logout } = useAuth();
@@ -54,6 +56,7 @@ export default function App() {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/questionnaire" element={<Questionnaire />} />
                     <Route path="/results" element={<Results />} />
+                    <Route path="/result/:id" element={<ResultDetail />} />
                     <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
                     <Route path="/register" element={<PublicOnlyRoute><RegisterPage /></PublicOnlyRoute>} />
                     <Route path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />

@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
     const { user, logout } = useAuth();
     const nav = useNavigate();
+    const location = useLocation();
     const [open, setOpen] = useState(false);
     const menuRef = useRef(null);
     const btnRef = useRef(null);
@@ -129,12 +130,15 @@ export default function Navbar() {
                             </div>
                         </div>
                     ) : (
-                        <>
-                            <NavLink to="/dashboard" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Dashboard</NavLink>
-                            <NavLink to="/questionnaire" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Questionnaires</NavLink>
-                            <NavLink to="/results" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Results</NavLink>
-                            <NavLink to="/login" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Admin Login</NavLink>
-                        </>
+                        // 未登录用户：只在非首页且非登录/注册页面显示导航按钮
+                        location.pathname !== '/' && location.pathname !== '/login' && location.pathname !== '/register' && (
+                            <>
+                                <NavLink to="/dashboard" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Dashboard</NavLink>
+                                <NavLink to="/questionnaire" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Questionnaires</NavLink>
+                                <NavLink to="/results" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Results</NavLink>
+                                <NavLink to="/login" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Admin Login</NavLink>
+                            </>
+                        )
                     )}
                 </div>
             </nav>

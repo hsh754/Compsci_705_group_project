@@ -77,3 +77,138 @@
     transition: width .2s ease;
 }
 .overlay-hint { font-size: 12px; margin-top: 10px; }
+
+
+/* ================================
+   Result page alignment with survey UI
+   ================================ */
+
+
+/* 顶部“返回结果列表”的链接样式（ResultDetail 通常有 <Link to="/results">） */
+a[href^="/results"] {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #111827;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(17, 24, 39, 0.06);
+    transition: transform .08s ease, box-shadow .2s ease, background .2s ease;
+}
+a[href^="/results"]::before { content: "↩"; font-size: 14px; line-height: 1; }
+a[href^="/results"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(17, 24, 39, 0.08);
+    background: #fafafa;
+}
+
+/* 标题层级与间距更贴近问卷页 */
+h2 { font-weight: 800; letter-spacing: .2px; margin: 6px 0 10px; }
+h3 { font-weight: 700; margin: 8px 0 6px; }
+
+/* 卡片风格统一（你已有 .sv-card；这里补轻微 hover 态） */
+.sv-card { background:#fff; border-radius:12px; box-shadow:0 2px 10px rgba(0,0,0,.05); border:1px solid rgba(0,0,0,.04); }
+.sv-card:hover { box-shadow:0 6px 16px rgba(0,0,0,.06); }
+
+/* 弱提示色统一为 slate 风格 */
+.sv-muted { color:#64748b; }
+
+/* 关键指标数值更醒目（用于结果页顶部几个 summary 卡片里的数字） */
+.sv-card .metric-value {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: .3px;
+}
+
+/* 图表容器卡片化（不改组件，仅给 SVG 一个卡片背景） */
+svg[aria-label="Line chart"],
+svg[aria-label="Bar chart"] {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.05);
+    display: block;
+    margin: 6px 0 12px;
+}
+svg[aria-label="Line chart"] text,
+svg[aria-label="Bar chart"] text {
+    fill: #475569;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* 让横向可滚容器滚动条更柔和（表格/图表横向滚动时更好看） */
+div[style*="overflow-x: auto"] {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f8fafc;
+}
+div[style*="overflow-x: auto"]::-webkit-scrollbar { height: 8px; }
+div[style*="overflow-x: auto"]::-webkit-scrollbar-track { background:#f8fafc; border-radius:8px; }
+div[style*="overflow-x: auto"]::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:8px; }
+
+/* 表格在卡片中的样式统一（若结果页有表格，会自动美化） */
+.sv-card table { width:100%; border-collapse: collapse; }
+.sv-card thead th {
+    text-align:left; font-weight:700; padding:10px 12px; background:#f8fafc; color:#334155; border-bottom:1px solid #e5e7eb;
+}
+.sv-card tbody td { padding:10px 12px; border-bottom:1px solid #f1f5f9; color:#0f172a; }
+.sv-card tbody tr:hover { background:#f9fafb; }
+
+/* 结果页整体内容在大屏时居中收窄，与问卷页观感一致（不改 JS，仅 CSS 控制） */
+@media (min-width: 1100px) {
+    /* 选中根容器下第一个 grid（你的 ResultDetail 外层是 grid 布局），只做温和约束 */
+    body > #root > div {
+        display: grid;
+        justify-content: center;
+    }
+    body > #root > div > div[style*="display: grid"][style*="gap: 16px"] {
+        width: min(1100px, 100%);
+    }
+}
+
+/* 与问卷页按钮风格统一（若结果页有 “返回/下载” 等按钮可直接复用） */
+.sv-btn {
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    border-radius:10px; padding:10px 16px; border:1px solid #e5e7eb; background:#fff; color:#111827;
+    transition:transform .08s ease, box-shadow .12s ease, border-color .12s ease;
+    cursor:pointer;
+}
+.sv-btn:hover { transform: translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,.06); border-color:#d1d5db; }
+.sv-btn-primary { background:#4f46e5; color:#fff; border-color:#4f46e5; }
+.sv-btn-primary:hover { box-shadow:0 8px 18px rgba(79,70,229,.25); }
+
+/* ===== ResultDetail: hide the "Back to history" link next to H2 ===== */
+@supports selector(a:has(+ h2)) {
+    /* 仅在 a[href^="/results"] 后面紧跟着 h2 时隐藏这个返回链接 */
+    a[href^="/results"]:has(+ h2) {
+        display: none !important;
+    }
+    /* 去掉因为隐藏链接导致的标题左侧空隙 */
+    a[href^="/results"]:has(+ h2) + h2 {
+        margin-left: 0 !important;
+    }
+}
+/* =============== Print-friendly styles =============== */
+@media print {
+    /* 白底、去阴影，打印更清晰 */
+    body { background: #fff !important; }
+    .sv-card {
+        box-shadow: none !important;
+        border: 1px solid #e5e7eb !important;
+        background: #fff !important;
+    }
+    /* 操作区、按钮、链接在打印时隐藏 */
+    .no-print,
+    .sv-btn,
+    a[href],
+    [role="button"] {
+        display: none !important;
+    }
+    /* 避免卡片/图表被硬切分页 */
+    .sv-card, .sv-pad {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    /* 让内容尽量铺开，减少左右留白 */
+    @page { margin: 12mm; }
+}
