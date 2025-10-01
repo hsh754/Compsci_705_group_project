@@ -15,9 +15,12 @@ emotions = {0:'angry', 1:'calm', 2:'disgust', 3:'fear', 4:'happy', 5:'sad', 6:'s
 
 # Paths
 dataset_path = ""
-haar_path = '../Emotion-Recognition_SER-FER_RAVDESS/Other/haarcascade_frontalface_default.xml'
-parameters_path = '../Emotion-Recognition_SER-FER_RAVDESS/Datasets/RAVDESS_audio/std_scaler.bin'
+haar_path = "../Emotion-Recognition_SER-FER_RAVDESS/Other/haarcascade_frontalface_default.xml"
+
+parameters_path = "../Emotion-Recognition_SER-FER_RAVDESS/Datasets/RAVDESS_audio/std_scaler.bin"
+
 models_video_path = "../Emotion-Recognition_SER-FER_RAVDESS/Models/Video Stream/"
+
 models_audio_path = "../Emotion-Recognition_SER-FER_RAVDESS/Models/Audio Stream/"
 
 # Audio video parameters

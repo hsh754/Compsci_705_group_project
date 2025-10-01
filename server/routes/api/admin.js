@@ -8,6 +8,9 @@ import {
   updateQuestionnaire,
   deleteQuestionnaire
 } from "../../controllers/questionnaireController.js";
+//import { simpleReport } from "../../controllers/statsController.js";
+import { simpleReport, getIndividualReport } from "../../controllers/statsController.js";
+
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -30,9 +33,18 @@ router.patch("/questionnaires/:id", protect, requireRole("admin"), updateQuestio
 router.delete("/questionnaires/:id", protect, requireRole("admin"), deleteQuestionnaire);
 
 // Reports (placeholder)
-router.get("/reports", protect, requireRole("admin"), (req, res) => {
+/*router.get("/reports", protect, requireRole("admin"), (req, res) => {
   res.json({ trend: [], groupCompare: [] });
-});
+});*/
+router.get(
+    "/reports",
+    protect,
+    requireRole("admin"),
+    simpleReport
+);
+
+router.get("/reports/:id", protect, requireRole("admin"), getIndividualReport);
+
 
 // System settings get/update (placeholder)
 router

@@ -15,8 +15,8 @@ ffmpeg.setFfmpegPath(ffmpegPath.path);
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 100 * 1024 * 1024 } });
 console.log("DEBUG: PYTHON_SCRIPT=", process.env.PYTHON_SCRIPT);
-const PYTHON_SCRIPT = process.env.PYTHON_SCRIPT || "../python/ER_FullClip_DEMO.py";
-const PYTHON_EXE = process.env.PYTHON_EXE || "../Emotion-Recognition_SER-FER_RAVDESS/.venv/emotion/Scripts/python.exe";
+const PYTHON_SCRIPT = "C:/Users/73698/Desktop/705/Project/9.27/Compsci_705_group_project/python/ER_FullClip_DEMO.py";
+const PYTHON_EXE = "C:/Users/73698/.conda/envs/emotion/python.exe";
 const PY_SCRIPT_N = path.win32.normalize(PYTHON_SCRIPT);
 const PY_EXE_N = path.win32.normalize(PYTHON_EXE);
 
