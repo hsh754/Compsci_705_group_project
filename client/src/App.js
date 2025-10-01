@@ -14,6 +14,7 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import Navbar from "./components/Navbar";
+import AdminIndividualReport from "./pages/admin/AdminIndividualReport";
 import "./components/survey.css"
 
 function Nav() {
@@ -63,6 +64,7 @@ export default function App() {
                     <Route path="/admin" element={<RoleRoute roles={["admin"]}><AdminDashboard /></RoleRoute>} />
                     <Route path="/admin/questionnaires" element={<RoleRoute roles={["admin"]}><AdminQuestionnaires /></RoleRoute>} />
                     <Route path="/admin/reports" element={<RoleRoute roles={["admin"]}><AdminReports /></RoleRoute>} />
+                    <Route path="/admin/reports/:id" element={<RoleRoute roles={["admin"]}><AdminIndividualReport /></RoleRoute>} />
                     <Route path="/admin/settings" element={<RoleRoute roles={["admin"]}><AdminSettings /></RoleRoute>} />
                 </Routes>
             </BrowserRouter>

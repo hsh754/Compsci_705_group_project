@@ -2,7 +2,7 @@
 import axios from "axios";
 
 export const http = axios.create({
-    baseURL: process.env.REACT_APP_API_BASE || "http://localhost:5000",
+    baseURL: process.env.REACT_APP_API_BASE || "http://localhost:5000/",
     timeout: 60000,
 });
 

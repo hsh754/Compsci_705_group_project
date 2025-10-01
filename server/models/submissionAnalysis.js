@@ -13,5 +13,7 @@ const SubmissionAnalysisSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now },
 });
 
-const SubmissionAnalysis = mongoose.model("SubmissionAnalysis", SubmissionAnalysisSchema);
+const SubmissionAnalysis =
+    mongoose.models.SubmissionAnalysis ||
+    mongoose.model("SubmissionAnalysis", SubmissionAnalysisSchema);
 export default SubmissionAnalysis;
