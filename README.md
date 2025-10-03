@@ -126,7 +126,7 @@ Follow the steps below to set up the environment:
 4. **Install Dependencies**
    Inside the activated virtual environment, install all required packages:
    ```bash
-   pip install -r requirements.txt
+   pip install -r requirement.txt
    ```
 
    The provided `requirements.txt` file ensures a fully reproducible environment.
