@@ -88,7 +88,6 @@ export default function Navbar() {
                         <>
                             <NavLink to="/dashboard" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Dashboard</NavLink>
                             <NavLink to="/questionnaire" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Questionnaire</NavLink>
-                            <NavLink to="/results" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Results</NavLink>
                         </>
                     )}
                     {user && user.role === 'admin' && (
@@ -96,7 +95,6 @@ export default function Navbar() {
                             <NavLink to="/admin" end className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Admin</NavLink>
                             <NavLink to="/admin/questionnaires" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Questionnaires</NavLink>
                             <NavLink to="/admin/reports" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Reports</NavLink>
-                            <NavLink to="/admin/settings" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Settings</NavLink>
                         </>
                     )}
                 </div>
@@ -135,7 +133,6 @@ export default function Navbar() {
                             <>
                                 <NavLink to="/dashboard" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Dashboard</NavLink>
                                 <NavLink to="/questionnaire" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Questionnaires</NavLink>
-                                <NavLink to="/results" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Results</NavLink>
                                 <NavLink to="/login" className={({isActive})=>`nav-link ${isActive? 'active':''}`}>Admin Login</NavLink>
                             </>
                         )

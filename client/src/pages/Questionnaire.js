@@ -280,12 +280,20 @@ export default function Questionnaire() {
             width: "100%",
             minHeight: "calc(100vh - 64px)",
             padding: 16,
-            display: "grid",
-            gridTemplateRows: "auto 1fr auto",
-            gap: 16,
+            display: "flex",
+            justifyContent: "center",
             background: "var(--page-bg, #f6f7fb)",
           }}
       >
+        <div
+          style={{
+            width: "100%",
+            maxWidth: "1100px",
+            display: "grid",
+            gridTemplateRows: "auto 1fr auto",
+            gap: 16,
+          }}
+        >
         <div style={{ display: "grid", gridTemplateRows: "1fr auto", gap: 16 }}>
           <div style={{ background: "#fff", borderRadius: 12, boxShadow: "0 2px 10px rgba(0,0,0,.05)", padding: 16 }}>
             <h3 style={{ marginTop: 0 }}>{detail?.title || "Preview"}</h3>
@@ -295,14 +303,14 @@ export default function Questionnaire() {
                     <div className="sv-col">
                       <ProgressSteps current={idx} total={detail.items.length} />
 
-                      <div className="sv-row" style={{ alignItems: "flex-start" }}>
+                      <div className="sv-row" style={{ alignItems: "flex-start", flexWrap: "wrap", justifyContent: "center" }}>
                         {/* Left: live preview */}
-                        <div>
+                        <div style={{ flex: "0 0 auto" }}>
                           <RecordingPreview stream={liveStream} recState={recState} />
                         </div>
 
-                        {/* Right: question block - 固定宽度 */}
-                        <div className="sv-card sv-pad" style={{ width: 400, minWidth: 400, maxWidth: 400 }}>
+                        {/* Right: question block */}
+                        <div className="sv-card sv-pad" style={{ flex: "1 1 400px", maxWidth: "500px", minWidth: "350px" }}>
                           <div className="q-title">Q{idx + 1}.</div>
                           <div className="q-lead sv-muted">Over the last 2 weeks …</div>
                           <div className="q-prompt" style={{ margin: "6px 0 12px" }}>
@@ -338,7 +346,7 @@ export default function Questionnaire() {
                     </div>
                 )
             ) : (
-                <div className="sv-card sv-pad" style={{ width: 600, margin: "0 auto" }}>
+                <div className="sv-card sv-pad" style={{ width: "100%", maxWidth: "700px", margin: "0 auto" }}>
                   <div className="q-title" style={{ fontSize: 32, marginBottom: 16 }}>Review your answers</div>
                   <div className="sv-col">
                     {detail.items.map((q, i) => (
@@ -405,6 +413,7 @@ export default function Questionnaire() {
                   : undefined
             }
         />
+        </div>
       </div>
   );
 }

@@ -268,10 +268,21 @@ export default function AdminIndividualReport() {
     );
 
     return (
-        <div style={{ padding: 16, display: "grid", gap: 16 }}>
+        <div style={{ 
+            padding: "32px 300px",
+            background: "#f8fafc",
+            minHeight: "100vh",
+            display: "grid",
+            gap: 16
+        }}>
             {/* 标题 */}
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <h2 style={{ margin: 0 }}>Participant Report</h2>
+                <h2 style={{ 
+                    fontSize: "28px", 
+                    fontWeight: "600", 
+                    color: "#1e293b",
+                    margin: 0
+                }}>Participant Report</h2>
                 <div style={{ color: "#666" }}>
                     <b>ID:</b> {id} &nbsp;|&nbsp; <b>时间:</b> {data.createdAt ? new Date(data.createdAt).toLocaleString() : "N/A"}
                 </div>

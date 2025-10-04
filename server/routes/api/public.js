@@ -36,14 +36,6 @@ router.get("/user/submissions/:id/analysis", getSubmissionAnalysis);
 // Video upload
 router.post("/user/questionnaires/:id/video", upload.single("video"), uploadVideo);
 
-// Placeholder endpoints
-router.get("/user/results", (req, res) => {
-  res.json([
-    { id: "r1", questionnaireId: "q1", submittedAt: new Date().toISOString(), score: 78 },
-    { id: "r2", questionnaireId: "q3", submittedAt: new Date().toISOString(), score: 85 },
-  ]);
-});
-
 export default router;
 
 

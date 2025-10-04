@@ -4,12 +4,10 @@ import HomePage from "./pages/HomePage";
 import AuthProvider, { useAuth } from "./context/AuthContext";
 import Dashboard from "./pages/Dashboard";
 import Questionnaire from "./pages/Questionnaire";
-import Results from "./pages/Results";
 import ResultDetail from "./pages/ResultDetail";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminQuestionnaires from "./pages/admin/AdminQuestionnaires";
 import AdminReports from "./pages/admin/AdminReports";
-import AdminSettings from "./pages/admin/AdminSettings";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -56,7 +54,6 @@ export default function App() {
                     {/* 普通用户可以直接访问这些页面，不需要登录 */}
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/questionnaire" element={<Questionnaire />} />
-                    <Route path="/results" element={<Results />} />
                     <Route path="/result/:id" element={<ResultDetail />} />
                     <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
                     <Route path="/register" element={<PublicOnlyRoute><RegisterPage /></PublicOnlyRoute>} />
@@ -65,7 +62,6 @@ export default function App() {
                     <Route path="/admin/questionnaires" element={<RoleRoute roles={["admin"]}><AdminQuestionnaires /></RoleRoute>} />
                     <Route path="/admin/reports" element={<RoleRoute roles={["admin"]}><AdminReports /></RoleRoute>} />
                     <Route path="/admin/reports/:id" element={<RoleRoute roles={["admin"]}><AdminIndividualReport /></RoleRoute>} />
-                    <Route path="/admin/settings" element={<RoleRoute roles={["admin"]}><AdminSettings /></RoleRoute>} />
                 </Routes>
             </BrowserRouter>
         </AuthProvider>

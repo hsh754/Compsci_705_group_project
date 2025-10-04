@@ -78,7 +78,11 @@ export default function AdminQuestionnaires() {
   }, [showUpload]);
 
   return (
-    <div style={{ padding: 16 }}>
+    <div style={{ 
+      padding: "32px 150px",
+      background: "#f8fafc",
+      minHeight: "100vh"
+    }}>
       <style>{`
         .modal-mask { position: fixed; inset: 0; background: rgba(0,0,0,.35); display: flex; align-items: center; justify-content: center; z-index: 1000; }
         .modal-card { width: 560px; max-width: calc(100% - 32px); background: #fff; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.2); padding: 20px; }
@@ -90,7 +94,12 @@ export default function AdminQuestionnaires() {
       `}</style>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-        <h2 style={{ margin: 0 }}>Questionnaire Management</h2>
+        <h2 style={{ 
+          fontSize: "28px", 
+          fontWeight: "600", 
+          color: "#1e293b",
+          margin: 0
+        }}>Questionnaire Management</h2>
         <button className="btn btn-primary" onClick={()=>setShowUpload(true)}>Upload file</button>
       </div>
 

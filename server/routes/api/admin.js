@@ -8,7 +8,6 @@ import {
   updateQuestionnaire,
   deleteQuestionnaire
 } from "../../controllers/questionnaireController.js";
-//import { simpleReport } from "../../controllers/statsController.js";
 import { simpleReport, getIndividualReport } from "../../controllers/statsController.js";
 
 
@@ -32,10 +31,7 @@ router.get("/questionnaires/:id", protect, requireRole("admin"), getQuestionnair
 router.patch("/questionnaires/:id", protect, requireRole("admin"), updateQuestionnaire);
 router.delete("/questionnaires/:id", protect, requireRole("admin"), deleteQuestionnaire);
 
-// Reports (placeholder)
-/*router.get("/reports", protect, requireRole("admin"), (req, res) => {
-  res.json({ trend: [], groupCompare: [] });
-});*/
+// Reports
 router.get(
     "/reports",
     protect,
@@ -45,17 +41,4 @@ router.get(
 
 router.get("/reports/:id", protect, requireRole("admin"), getIndividualReport);
 
-
-// System settings get/update (placeholder)
-router
-  .route("/settings")
-  .get(protect, requireRole("admin"), (req, res) => {
-    res.json({ evalThreshold: 0.7, permissions: { create: true, delete: false } });
-  })
-  .put(protect, requireRole("admin"), (req, res) => {
-    res.json({ success: true });
-  });
-
 export default router;
-
-

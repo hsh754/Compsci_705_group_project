@@ -155,16 +155,7 @@ div[style*="overflow-x: auto"]::-webkit-scrollbar-thumb { background:#cbd5e1; bo
 .sv-card tbody tr:hover { background:#f9fafb; }
 
 /* 结果页整体内容在大屏时居中收窄，与问卷页观感一致（不改 JS，仅 CSS 控制） */
-@media (min-width: 1100px) {
-    /* 选中根容器下第一个 grid（你的 ResultDetail 外层是 grid 布局），只做温和约束 */
-    body > #root > div {
-        display: grid;
-        justify-content: center;
-    }
-    body > #root > div > div[style*="display: grid"][style*="gap: 16px"] {
-        width: min(1100px, 100%);
-    }
-}
+/* REMOVED: This was restricting all admin pages to 1100px width */
 
 /* 与问卷页按钮风格统一（若结果页有 “返回/下载” 等按钮可直接复用） */
 .sv-btn {
