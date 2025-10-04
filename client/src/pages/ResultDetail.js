@@ -432,9 +432,21 @@ export default function ResultDetail() {
         };
     }, [submission, analysis]);
 
-    if (loading) return <div style={{ padding: 16 }}><div className="sv-card sv-pad">Loading result...</div></div>;
-    if (error)   return <div style={{ padding: 16 }}><div className="sv-card sv-pad" style={{ color: "#b91c1c" }}>Failed to load: {error}</div></div>;
-    if (!submission || !computed) return <div style={{ padding: 16 }}><div className="sv-card sv-pad">Result not found.</div></div>;
+    if (loading) return (
+        <div style={{ display: "grid", placeItems: "center", padding: 24 }}>
+            <div className="sv-card sv-pad" style={{ maxWidth: 600 }}>Loading result...</div>
+        </div>
+    );
+    if (error) return (
+        <div style={{ display: "grid", placeItems: "center", padding: 24 }}>
+            <div className="sv-card sv-pad" style={{ color: "#b91c1c", maxWidth: 600 }}>Failed to load: {error}</div>
+        </div>
+    );
+    if (!submission || !computed) return (
+        <div style={{ display: "grid", placeItems: "center", padding: 24 }}>
+            <div className="sv-card sv-pad" style={{ maxWidth: 600 }}>Result not found.</div>
+        </div>
+    );
 
     const {
         subjective, objective, finalScore,
@@ -446,7 +458,20 @@ export default function ResultDetail() {
     const cat = getAnxietyCategory(finalTotal);
 
     return (
-        <div style={{ padding: 16, display: "grid", gap: 16 }}>
+        <div style={{ 
+            width: "100%",
+            minHeight: "calc(100vh - 64px)",
+            padding: 16,
+            display: "flex",
+            justifyContent: "center",
+            background: "var(--page-bg, #f6f7fb)"
+        }}>
+            <div style={{
+                width: "100%",
+                maxWidth: "1100px",
+                display: "grid",
+                gap: 16
+            }}>
             {/* 顶部：结论 Hero */}
             <div className="sv-card" style={{ padding: 16, display: "grid", gridTemplateColumns: "1fr auto", gap: 16, alignItems: "center" }}>
                 <div>
@@ -521,7 +546,7 @@ export default function ResultDetail() {
                 <div className="sv-muted" style={{ marginBottom: 8 }}>
                     Line chart of Subjective, Objective, and Final scores (0–3)
                 </div>
-                <div style={{ overflowX: "auto" }}>
+                <div style={{ overflowX: "auto", display: "flex", justifyContent: "center" }}>
                     <AxisLineChart
                         series={[
                             { label: "Subjective", data: subjective },
@@ -538,7 +563,7 @@ export default function ResultDetail() {
                 <div className="sv-muted" style={{ marginBottom: 8 }}>
                     If adjusted, both deviations are shown. Otherwise, “Objective − Final” equals “Objective − Subjective”.
                 </div>
-                <div style={{ overflowX: "auto" }}>
+                <div style={{ overflowX: "auto", display: "flex", justifyContent: "center" }}>
                     <AxisBarChartMulti
                         series={
                             needsAdjustment
@@ -561,6 +586,7 @@ export default function ResultDetail() {
                     <button className="sv-btn" onClick={handleExit}>Exit to Dashboard</button>
                     <button className="sv-btn sv-btn-primary" onClick={handlePrint}>Print as PDF</button>
                 </div>
+            </div>
             </div>
         </div>
     );
