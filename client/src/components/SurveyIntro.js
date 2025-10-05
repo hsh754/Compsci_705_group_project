@@ -9,6 +9,26 @@ export default function SurveyIntro({ onContinue }) {
                 <p style={{ fontSize:18, lineHeight:1.6 }}>
                     This survey has <b>7 quick questions</b> and takes <b>only 2–3 minutes</b>.
                 </p>
+                
+                <div style={{ 
+                    fontSize:16, 
+                    lineHeight:1.6, 
+                    marginTop:16, 
+                    padding:16, 
+                    background:"#f8fafc", 
+                    borderRadius:12, 
+                    border:"1px solid #e2e8f0" 
+                }}>
+                    <h3 style={{ fontSize:18, margin:"0 0 12px", color:"#374151" }}>Here's how it works:</h3>
+                    <ol style={{ margin:0, paddingLeft:20, color:"#4b5563" }}>
+                        <li><b>You answer questions</b> while we record your responses</li>
+                        <li><b>Our multimodal model analyzes</b> your facial expressions and voice patterns</li>
+                        <li><b>We compare</b> your answers with what we observe emotionally</li>
+                        <li><b>If needed, we adjust</b> your scores to better reflect your true feelings</li>
+                        <li><b>You get a personalized report</b> about your mental health status</li>
+                    </ol>
+                </div>
+                
                 <p style={{ fontSize:18, lineHeight:1.6, marginTop:12 }}>
                     This study helps us understand stress better and can provide you with feedback about your mental health status.
                 </p>

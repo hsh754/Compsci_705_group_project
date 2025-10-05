@@ -1,5 +1,5 @@
 // src/pages/ResultDetail.js
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { http } from "../api/http";
 
@@ -354,6 +354,101 @@ function AxisBarChartMulti({
 }
 
 /* ============================
+   Tooltip 组件
+   ============================ */
+function TooltipChip({ children, content, style, ...props }) {
+    const [showTooltip, setShowTooltip] = useState(false);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const chipRef = useRef(null);
+
+    const handleMouseEnter = (e) => {
+        if (chipRef.current) {
+            const rect = chipRef.current.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            const tooltipWidth = 280; // maxWidth from tooltip style
+            
+            // 计算最佳位置，避免超出视窗
+            let x = rect.left + rect.width / 2;
+            if (x - tooltipWidth / 2 < 10) {
+                x = tooltipWidth / 2 + 10;
+            } else if (x + tooltipWidth / 2 > viewportWidth - 10) {
+                x = viewportWidth - tooltipWidth / 2 - 10;
+            }
+            
+            setPosition({
+                x: x,
+                y: rect.top - 8
+            });
+        }
+        setShowTooltip(true);
+    };
+
+    const handleMouseLeave = () => {
+        setShowTooltip(false);
+    };
+
+    return (
+        <>
+            <span
+                ref={chipRef}
+                className="sv-btn"
+                style={{
+                    ...style,
+                    cursor: "help",
+                    position: "relative"
+                }}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onTouchStart={handleMouseEnter}
+                onTouchEnd={handleMouseLeave}
+                {...props}
+            >
+                {children}
+            </span>
+            
+            {showTooltip && (
+                <div
+                    style={{
+                        position: "fixed",
+                        left: position.x,
+                        top: position.y,
+                        transform: "translateX(-50%) translateY(-100%)",
+                        background: "#1f2937",
+                        color: "#fff",
+                        padding: "8px 12px",
+                        borderRadius: "8px",
+                        fontSize: window.innerWidth < 768 ? "12px" : "13px",
+                        fontWeight: "500",
+                        lineHeight: "1.4",
+                        maxWidth: window.innerWidth < 768 ? "90vw" : "280px",
+                        zIndex: 1000,
+                        boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                        pointerEvents: "none",
+                        whiteSpace: "normal"
+                    }}
+                >
+                    {content}
+                    {/* 小箭头 */}
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: "100%",
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            width: 0,
+                            height: 0,
+                            borderLeft: "6px solid transparent",
+                            borderRight: "6px solid transparent",
+                            borderTop: "6px solid #1f2937"
+                        }}
+                    />
+                </div>
+            )}
+        </>
+    );
+}
+
+/* ============================
    页面
    ============================ */
 export default function ResultDetail() {
@@ -498,34 +593,53 @@ export default function ResultDetail() {
                         {cat.suggestion}
                     </div>
 
-                    {/* 次要信息：chips */}
+                    {/* 次要信息：chips with tooltips */}
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
-            <span className="sv-btn" style={{ padding: "6px 10px" }}>
-              Subjective total: <b style={{ marginLeft: 6 }}>{subjectiveTotal}</b>
-            </span>
-                        <span className="sv-btn" style={{ padding: "6px 10px" }}>
-              Objective total: <b style={{ marginLeft: 6 }}>{objectiveTotal}</b>
-            </span>
-                        <span className="sv-btn" style={{ padding: "6px 10px" }}>
-              Adjusted: <b style={{ marginLeft: 6 }}>{needsAdjustment ? "Yes" : "No"}</b>
-            </span>
+                        <TooltipChip 
+                            content="Direct questionnaire scores from your answers"
+                            style={{ padding: "6px 10px" }}
+                        >
+                            Subjective total: <b style={{ marginLeft: 6 }}>{subjectiveTotal}</b>
+                        </TooltipChip>
+                        
+                        <TooltipChip 
+                            content="multimodal emotional model analysis scores from your video recordings"
+                            style={{ padding: "6px 10px" }}
+                        >
+                            Objective total: <b style={{ marginLeft: 6 }}>{objectiveTotal}</b>
+                        </TooltipChip>
+                        
+                        <TooltipChip 
+                            content="Whether model analysis was used to modify your questionnaire scores"
+                            style={{ padding: "6px 10px" }}
+                        >
+                            Adjusted: <b style={{ marginLeft: 6 }}>{needsAdjustment ? "Yes" : "No"}</b>
+                        </TooltipChip>
+                        
                         {needsAdjustment && (
-                            <span className="sv-btn" style={{ padding: "6px 10px" }}>
-                Adjusted total: <b style={{ marginLeft: 6 }}>{adjustedTotal}</b>
-              </span>
+                            <TooltipChip 
+                                content=" Final score combining questionnaire and model emotion analysis"
+                                style={{ padding: "6px 10px" }}
+                            >
+                                Adjusted total: <b style={{ marginLeft: 6 }}>{adjustedTotal}</b>
+                            </TooltipChip>
                         )}
                     </div>
                 </div>
 
                 {/* 右侧：Final total 大号数值 */}
-                <div className="sv-card" style={{ minWidth: 220, justifySelf: "end", textAlign: "center", padding: 16 }}>
-                    <div className="sv-muted">Final score (0–21)</div>
-                    <div style={{ fontSize: 40, fontWeight: 900, lineHeight: 1, marginTop: 8, color: "#0f172a" }}>
-                        {finalTotal}
-                    </div>
-                    <div style={{ marginTop: 8, fontSize: 12, color: "#64748b" }}>
-                        {needsAdjustment ? "Using adjusted scores" : "Using subjective scores"}
-                    </div>
+                <TooltipChip 
+                    content="This is your final anxiety assessment score."
+                    style={{ minWidth: 220, justifySelf: "end", textAlign: "center", padding: 16, display: "block", cursor: "help" }}
+                >
+                    <div className="sv-card" style={{ minWidth: 220, justifySelf: "end", textAlign: "center", padding: 16 }}>
+                        <div className="sv-muted">Final score (0–21)</div>
+                        <div style={{ fontSize: 40, fontWeight: 900, lineHeight: 1, marginTop: 8, color: "#0f172a" }}>
+                            {finalTotal}
+                        </div>
+                        <div style={{ marginTop: 8, fontSize: 12, color: "#64748b" }}>
+                            {needsAdjustment ? "Using adjusted scores" : "Using subjective scores"}
+                        </div>
                     <div style={{ marginTop: 10, height: 6, width: "100%", background: "#f1f5f9", borderRadius: 999, overflow: "hidden" }}>
                         {/* 进度条（占比展示 0-21） */}
                         <div
@@ -537,7 +651,8 @@ export default function ResultDetail() {
                             }}
                         />
                     </div>
-                </div>
+                    </div>
+                </TooltipChip>
             </div>
 
             {/* Per-question scores（自适应纵轴 + 留边分布） */}
@@ -561,7 +676,11 @@ export default function ResultDetail() {
             <div className="sv-card sv-pad">
                 <h3 style={{ marginTop: 0 }}>Per-question deviations</h3>
                 <div className="sv-muted" style={{ marginBottom: 8 }}>
-                    If adjusted, both deviations are shown. Otherwise, “Objective − Final” equals “Objective − Subjective”.
+                    If adjusted, both deviations are shown. Otherwise, "Objective − Final" equals "Objective − Subjective".
+                    <div style={{ marginTop: 4, fontSize: "12px", color: "#9ca3af" }}>
+                        💡 <strong>Positive values:</strong> AI detected higher emotion than questionnaire • 
+                        <strong> Negative values:</strong> AI detected lower emotion than questionnaire
+                    </div>
                 </div>
                 <div style={{ overflowX: "auto", display: "flex", justifyContent: "center" }}>
                     <AxisBarChartMulti

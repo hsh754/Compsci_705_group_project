@@ -58,6 +58,7 @@ export default function Questionnaire() {
   };
 
   const saveVideoBlob = (blob, questionIndex) => {
+    console.log(`Frontend: Saving video blob for question ${questionIndex}, size: ${blob.size} bytes`);
     setVideoBlobs((prev) => {
       const next = [...prev];
       next[questionIndex] = blob;
@@ -163,17 +164,33 @@ export default function Questionnaire() {
 
   // submit & analysis (single overlay, two phases)
   const handleSubmit = async () => {
+    console.log("========================================");
+    console.log("Frontend: Starting submission");
+    console.log("Frontend: sessionId =", sessionId);
+    console.log("Frontend: selectedId =", selectedId);
+    
     const arr = detail.items.map((it, i) => ({
       questionId: it.id,
       optionIndex: typeof answers[i] === "number" ? answers[i] : -1,
     }));
+    console.log("Frontend: Answers array =", arr);
 
     const form = new FormData();
     form.append("sessionId", sessionId);
     form.append("answers", JSON.stringify(arr));
+    
+    let videoCount = 0;
     videoBlobs.forEach((blob, i) => {
-      if (blob) form.append("videos", blob, `question_${i}.webm`);
+      if (blob) {
+        form.append("videos", blob, `question_${i}.webm`);
+        videoCount++;
+        console.log(`Frontend: Added video ${i}, size: ${blob.size} bytes`);
+      } else {
+        console.log(`Frontend: No video for question ${i}`);
+      }
     });
+    console.log("Frontend: Total videos to upload =", videoCount);
+    console.log("========================================");
 
     // open overlay in "loading"
     setOverlayOpen(true);
@@ -213,6 +230,11 @@ export default function Questionnaire() {
 
       // success → same overlay switches to "done"
       clearInterval(analyzingTimer);
+      
+      console.log("========================================");
+      console.log("Frontend: Submission successful!");
+      console.log("Frontend: Response data =", data);
+      console.log("========================================");
 
       // prefer server resultUrl if provided; otherwise construct from id
       const rid = data?.id || data?._id;
@@ -248,6 +270,13 @@ export default function Questionnaire() {
       window.__GO_RESULT__ = goResult;
     } catch (e) {
       clearInterval(analyzingTimer);
+      
+      console.error("========================================");
+      console.error("Frontend: Submission failed!");
+      console.error("Frontend: Error =", e);
+      console.error("Frontend: Response data =", e?.response?.data);
+      console.error("========================================");
+      
       setOverlayMode("error");
       setOverlayTitle("Submission failed");
       setOverlaySub(e?.response?.data?.error || e.message || "Please try again later.");
@@ -279,7 +308,7 @@ export default function Questionnaire() {
           style={{
             width: "100%",
             minHeight: "calc(100vh - 64px)",
-            padding: 16,
+            padding: "clamp(8px, 2vw, 16px)",
             display: "flex",
             justifyContent: "center",
             background: "var(--page-bg, #f6f7fb)",

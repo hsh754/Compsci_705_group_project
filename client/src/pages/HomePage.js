@@ -150,7 +150,7 @@ export default function HomePage() {
     <div style={{ 
       minHeight: "100vh",
       background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)",
-      padding: "60px 20px 40px"
+      padding: "40px 16px"
     }}>
       <div style={{ 
         maxWidth: 1000, 
@@ -158,20 +158,22 @@ export default function HomePage() {
         textAlign: "center"
       }}>
         {/* 页面标题 */}
-        <div style={{ marginBottom: 40 }}>
+        <div style={{ marginBottom: 32 }}>
           <h1 style={{ 
-            fontSize: 48, 
+            fontSize: "clamp(28px, 6vw, 48px)", 
             fontWeight: 900, 
             color: "#111827", 
             marginBottom: 12,
-            letterSpacing: "-0.02em"
+            letterSpacing: "-0.02em",
+            lineHeight: 1.2
           }}>
             Welcome to SurveyApp
           </h1>
           <p style={{ 
-            fontSize: 20, 
+            fontSize: "clamp(16px, 3vw, 20px)", 
             color: "#6b7280", 
-            fontWeight: 500
+            fontWeight: 500,
+            padding: "0 16px"
           }}>
             Multimodal Questionnaire Evaluation Platform
           </p>
@@ -180,9 +182,9 @@ export default function HomePage() {
         {/* 两个主要卡片 */}
         <div style={{ 
           display: "grid", 
-          gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))", 
-          gap: 32,
-          marginBottom: 40
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))", 
+          gap: "clamp(16px, 4vw, 32px)",
+          marginBottom: 32
         }}>
           <QuickStartCard />
           <AdminCard />
@@ -191,10 +193,11 @@ export default function HomePage() {
         {/* 底部说明 */}
         <div style={{ 
           color: "#9ca3af", 
-          fontSize: 14,
+          fontSize: "clamp(13px, 2.5vw, 14px)",
           maxWidth: 600,
           margin: "0 auto",
-          lineHeight: 1.6
+          lineHeight: 1.6,
+          padding: "0 16px"
         }}>
           Choose your path above to get started. Regular users can begin with a questionnaire, while administrators can access the management dashboard.
         </div>

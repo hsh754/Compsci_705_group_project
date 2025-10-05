@@ -120,7 +120,7 @@ export default function AdminDashboard() {
   return (
       <div
           style={{
-            padding: "32px 150px",
+            padding: "clamp(16px, 4vw, 32px) clamp(16px, 8vw, 150px)",
             background: "#f8fafc",
             minHeight: "100vh",
           }}

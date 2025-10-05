@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getSimpleReport } from "../../api/stats";
+import "../../components/admin-responsive.css";
 
 export default function AdminReports() {
     const [data, setData] = useState(null);
@@ -53,7 +54,7 @@ export default function AdminReports() {
 
     return (
         <div style={{ 
-            padding: "32px 48px",
+            padding: "clamp(16px, 4vw, 32px) clamp(16px, 6vw, 48px)",
             background: "#f8fafc",
             minHeight: "100vh"
         }}>
@@ -276,7 +277,7 @@ export default function AdminReports() {
 
                         {/* 分页控件 */}
                         {totalPages > 1 && (
-                            <div style={{
+                            <div className="pagination-container" style={{
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "space-between",

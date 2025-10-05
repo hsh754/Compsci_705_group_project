@@ -1,0 +1,78 @@
+/* Admin响应式样式 */
+
+/* 移动端表格优化 */
+@media (max-width: 768px) {
+    /* 表格容器横向滚动 */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* 表头和单元格最小宽度 */
+    thead th,
+    tbody td {
+        min-width: 80px;
+        font-size: 13px !important;
+        padding: 10px 8px !important;
+    }
+    
+    thead th:first-child,
+    tbody td:first-child {
+        min-width: 100px;
+        position: sticky;
+        left: 0;
+        background: #fff;
+        z-index: 1;
+    }
+    
+    thead th:first-child {
+        background: #f8fafc;
+    }
+    
+    /* 分页按钮优化 */
+    .pagination-container {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+    
+    /* 按钮大小调整 */
+    button {
+        font-size: 13px !important;
+        padding: 6px 10px !important;
+    }
+    
+    /* 标题字体缩小 */
+    h2 {
+        font-size: clamp(20px, 5vw, 28px) !important;
+    }
+    
+    h4 {
+        font-size: clamp(16px, 4vw, 18px) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    /* 极小屏幕进一步优化 */
+    thead th,
+    tbody td {
+        min-width: 60px;
+        font-size: 12px !important;
+        padding: 8px 6px !important;
+    }
+    
+    /* 按钮更小 */
+    button {
+        font-size: 12px !important;
+        padding: 6px 8px !important;
+        min-width: 32px !important;
+    }
+    
+    /* 分页按钮间距减小 */
+    .pagination-container > div:last-child {
+        gap: 4px !important;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

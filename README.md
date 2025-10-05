@@ -19,12 +19,12 @@ This is a full-stack mental health assessment application that combines traditio
 
 ### Key Features
 
-- 🎥 **Dual-Stream Emotion Recognition**: Integrates Speech Emotion Recognition (SER) and Facial Emotion Recognition (FER)
-- 📊 **Advanced Analytics Dashboard**: Real-time statistical analysis with interactive visualizations
-- 🔐 **Role-Based Access Control**: Separate interfaces for users and administrators
-- 📹 **Video Recording & Analysis**: Automatic emotion detection from user-submitted video responses
-- 📈 **Correlation Analysis**: Spearman correlation between subjective and objective measures
-- 🎨 **Modern UI/UX**: Responsive design with intuitive navigation and visual feedback
+-  **Dual-Stream Emotion Recognition**: Integrates Speech Emotion Recognition (SER) and Facial Emotion Recognition (FER)
+-  **Advanced Analytics Dashboard**: Real-time statistical analysis with interactive visualizations
+-  **Role-Based Access Control**: Separate interfaces for users and administrators
+-  **Video Recording & Analysis**: Automatic emotion detection from user-submitted video responses
+-  **Correlation Analysis**: Spearman correlation between subjective and objective measures
+-  **Modern UI/UX**: Responsive design with intuitive navigation and visual feedback
 
 ---
 

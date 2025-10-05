@@ -178,14 +178,19 @@ export const getSubmissionAnalysis = async (req, res) => {
 // Submit answers with videos and emotion analysis
 export const submitAnswersWithVideos = async (req, res) => {
   try {
-    // console.log("DEBUG using python exe:", PY_EXE_N);
-    // console.log("DEBUG using python script:", PY_SCRIPT_N);
+    console.log("========================================");
+    console.log("DEBUG: submitAnswersWithVideos called");
+    console.log("DEBUG: req.params.id =", req.params.id);
+    console.log("DEBUG: req.files count =", req.files?.length || 0);
+    console.log("DEBUG: req.body.sessionId =", req.body.sessionId);
+    console.log("========================================");
 
     const q = await Questionnaire.findById(req.params.id);
     if (!q) return res.status(404).json({ error: "Not found" });
 
     const sessionId = req.body.sessionId || Date.now().toString();
     const answers = JSON.parse(req.body.answers || "[]");
+    console.log("DEBUG: Parsed answers count =", answers.length);
 
     // 计算分数（与你原来一致）
     let total = 0;
@@ -202,102 +207,121 @@ export const submitAnswersWithVideos = async (req, res) => {
       questionnaireId: q._id, title: q.title, version: q.version,
       answers: processedAnswers, totalScore: total
     });
+    console.log("DEBUG: Submission created with ID =", sub._id);
 
     let emotionResults = null;
+    let tempDir = null;
 
+    console.log("DEBUG: Checking for video files...");
     if (req.files && req.files.length > 0) {
+      console.log("DEBUG: Found", req.files.length, "video files, starting processing...");
       // 1) 保存到临时目录
-      const tempDir = path.join(process.cwd(), "tmp", `session_${sessionId}`);
+      tempDir = path.join(process.cwd(), "tmp", `session_${sessionId}`);
       fs.mkdirSync(tempDir, { recursive: true });
       console.log("DEBUG: temp dir has been created ->", tempDir);
 
-      const mp4Files = [];
-      for (let i = 0; i < req.files.length; i++) {
-        const file = req.files[i];
-        const webmPath = path.join(tempDir, `question_${String(i + 1).padStart(2, "0")}.webm`);
-        const mp4Path = webmPath.replace(".webm", ".mp4");
-
-        // 写入 webm
-        fs.writeFileSync(webmPath, file.buffer);
-        console.log(`DEBUG: video has been saved -> ${webmPath}, size: ${file.buffer.length} bytes`);
-
-        // transcode to mp4
-        await new Promise((resolve, reject) => {
-          ffmpeg(webmPath)
-              .output(mp4Path)
-              .videoCodec("libx264")
-              .audioCodec("aac")
-              .on("end", () => {
-                console.log("DEBUG: transcode successfully ->", mp4Path);
-                mp4Files.push(mp4Path);
-                resolve();
-              })
-              .on("error", (err) => {
-                console.error("DEBUG: transcode failed ->", err);
-                reject(err);
-              })
-              .run();
-        });
-      }
-      // req.files.forEach((file, i) => {
-      //   const fname = `question_${String(i + 1).padStart(2, "0")}.webm`;
-      //   const savePath = path.join(tempDir, fname);
-      //   fs.writeFileSync(path.join(tempDir, fname), file.buffer);
-      //   console.log(`DEBUG: video has been saved -> ${savePath}, size: ${file.buffer.length} bytes`);
-      // });
-
-      // 2) 路径校验 + 设置 cwd = 脚本所在目录
-      assertPathsOrThrow();
-      const scriptDir = path.dirname(PY_SCRIPT_N);
-
-             // 3) 选择 python 可执行文件
-       const pythonCmd = PY_EXE_N;
-       const rawScores = processedAnswers.map(a => a.score);
-      // 4) 调用 Python
-      //    注意：这里不用给脚本路径加引号，spawn 会正确处理；路径已规范化为 win32 格式
-      const py = spawn(pythonCmd, [PY_SCRIPT_N, tempDir, JSON.stringify(rawScores)], {
-        cwd: scriptDir,
-        stdio: ["ignore", "pipe", "pipe"]
-      });
-
-      let out = "", err = "";
-      py.stdout.on("data", d => (out += d.toString()));
-      py.stderr.on("data", d => (err += d.toString()));
-
-      await new Promise((resolve, reject) => {
-        py.on("close", (code) => {
-          console.log("DEBUG: Python exit code =", code);
-          console.log("DEBUG: Python raw stdout =", out);
-          if (err) console.error("DEBUG: Python stderr =", err);
-
-          if (code === 0) {
-            try {
-              const raw = out.trim();
-              try {
-                emotionResults = JSON.parse(raw);
-              } catch (e1) {
-                // Sanitize non-JSON values like NaN/Infinity which Python might emit
-                const sanitized = raw
-                  .replace(/\bNaN\b/g, "null")
-                  .replace(/\bInfinity\b/g, "null")
-                  .replace(/\b-Infinity\b/g, "null");
-                emotionResults = JSON.parse(sanitized);
-              }
-              resolve();
-            } catch (e) {
-              reject(new Error(`Parse Python JSON failed: ${e.message}\nRAW:\n${out}`));
-            }
-          } else {
-            reject(new Error(`Python exit ${code}\n${err}`));
-          }
-        });
-      });
-
-      // 5) 清理临时目录（失败也不影响主流程）
       try {
-        // fs.rmSync(tempDir, { recursive: true, force: true });
-        console.log("DEBUG: The temporary directory has been recored ->", tempDir);
-      } catch {}
+        const mp4Files = [];
+        for (let i = 0; i < req.files.length; i++) {
+          const file = req.files[i];
+          const webmPath = path.join(tempDir, `question_${String(i + 1).padStart(2, "0")}.webm`);
+          const mp4Path = webmPath.replace(".webm", ".mp4");
+
+          // 写入 webm
+          fs.writeFileSync(webmPath, file.buffer);
+          console.log(`DEBUG: video has been saved -> ${webmPath}, size: ${file.buffer.length} bytes`);
+
+          // transcode to mp4
+          await new Promise((resolve, reject) => {
+            ffmpeg(webmPath)
+                .output(mp4Path)
+                .videoCodec("libx264")
+                .audioCodec("aac")
+                .on("end", () => {
+                  console.log("DEBUG: transcode successfully ->", mp4Path);
+                  mp4Files.push(mp4Path);
+                  resolve();
+                })
+                .on("error", (err) => {
+                  console.error("DEBUG: transcode failed ->", err);
+                  reject(err);
+                })
+                .run();
+          });
+        }
+
+        // 2) 路径校验 + 设置 cwd = 脚本所在目录
+        console.log("DEBUG: Validating Python paths...");
+        assertPathsOrThrow();
+        const scriptDir = path.dirname(PY_SCRIPT_N);
+
+        // 3) 选择 python 可执行文件
+        const pythonCmd = PY_EXE_N;
+        const rawScores = processedAnswers.map(a => a.score);
+        
+        console.log("DEBUG: ========== Python Call Info ==========");
+        console.log("DEBUG: Python executable:", pythonCmd);
+        console.log("DEBUG: Python script:", PY_SCRIPT_N);
+        console.log("DEBUG: Working directory:", scriptDir);
+        console.log("DEBUG: Temp directory:", tempDir);
+        console.log("DEBUG: Raw scores:", rawScores);
+        console.log("DEBUG: ======================================");
+        
+        // 4) 调用 Python
+        //    注意：这里不用给脚本路径加引号，spawn 会正确处理；路径已规范化为 win32 格式
+        const py = spawn(pythonCmd, [PY_SCRIPT_N, tempDir, JSON.stringify(rawScores)], {
+          cwd: scriptDir,
+          stdio: ["ignore", "pipe", "pipe"]
+        });
+        
+        console.log("DEBUG: Python process spawned, waiting for results...");
+
+        let out = "", err = "";
+        py.stdout.on("data", d => (out += d.toString()));
+        py.stderr.on("data", d => (err += d.toString()));
+
+        await new Promise((resolve, reject) => {
+          py.on("close", (code) => {
+            console.log("DEBUG: Python exit code =", code);
+            console.log("DEBUG: Python raw stdout =", out);
+            if (err) console.error("DEBUG: Python stderr =", err);
+
+            if (code === 0) {
+              try {
+                const raw = out.trim();
+                try {
+                  emotionResults = JSON.parse(raw);
+                } catch (e1) {
+                  // Sanitize non-JSON values like NaN/Infinity which Python might emit
+                  const sanitized = raw
+                    .replace(/\bNaN\b/g, "null")
+                    .replace(/\bInfinity\b/g, "null")
+                    .replace(/\b-Infinity\b/g, "null");
+                  emotionResults = JSON.parse(sanitized);
+                }
+                resolve();
+              } catch (e) {
+                reject(new Error(`Parse Python JSON failed: ${e.message}\nRAW:\n${out}`));
+              }
+            } else {
+              reject(new Error(`Python exit ${code}\n${err}`));
+            }
+          });
+        });
+
+      } finally {
+        // 5) 清理临时目录（无论成功失败都要清理）
+        if (tempDir && fs.existsSync(tempDir)) {
+          try {
+            fs.rmSync(tempDir, { recursive: true, force: true });
+            console.log("DEBUG: Temporary directory cleaned up successfully ->", tempDir);
+          } catch (cleanupErr) {
+            console.warn("DEBUG: Failed to cleanup temporary directory:", cleanupErr.message);
+          }
+        }
+      }
+    } else {
+      console.log("DEBUG: No video files received, skipping video processing and emotion analysis");
     }
     let adjustedTotal = total;
 
@@ -346,9 +370,16 @@ export const submitAnswersWithVideos = async (req, res) => {
       }
     }
 
+    console.log("DEBUG: Sending response with submissionId =", sub._id);
+    console.log("DEBUG: Total score =", total, "Adjusted total =", adjustedTotal);
+    console.log("DEBUG: Has emotion results =", !!emotionResults);
+    
     res.status(201).json({ success: true, id: sub._id, totalScore: total, emotionResults, adjustedTotal,  resultUrl: `/result/${sub._id}`});
   } catch (err) {
-    console.error("Submit answers with videos error:", err);
+    console.error("========================================");
+    console.error("ERROR: Submit answers with videos failed");
+    console.error("ERROR:", err);
+    console.error("========================================");
     res.status(500).json({ error: err.message || "Failed to submit answers" });
   }
 };

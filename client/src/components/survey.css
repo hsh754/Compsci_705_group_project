@@ -179,6 +179,70 @@ div[style*="overflow-x: auto"]::-webkit-scrollbar-thumb { background:#cbd5e1; bo
         margin-left: 0 !important;
     }
 }
+/* =============== Responsive Mobile Styles =============== */
+@media (max-width: 768px) {
+    /* 录制预览在移动端全宽 */
+    .rec-wrap { 
+        width: 100%; 
+        max-width: 320px;
+        margin: 0 auto;
+    }
+    
+    /* 进度条间距减小 */
+    .sv-steps { 
+        gap: 8px; 
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .sv-step { 
+        width: 30px; 
+        height: 30px; 
+        font-size: 13px;
+    }
+    
+    /* 题干字体缩小 */
+    .q-title { font-size: 28px; }
+    .q-lead { font-size: 16px; }
+    .q-prompt { font-size: 18px; }
+    
+    /* 卡片内边距减小 */
+    .sv-pad { padding: 12px; }
+    
+    /* 表情选项网格优化 */
+    .emoji-grid { gap: 8px; }
+    .emoji-btn { 
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+    .emoji-ico { font-size: 18px; }
+    
+    /* 覆盖层卡片宽度 */
+    .overlay-card {
+        width: min(420px, 90vw);
+        padding: 20px;
+    }
+    .overlay-title { font-size: 18px; }
+    .spinner { width: 40px; height: 40px; }
+}
+
+@media (max-width: 480px) {
+    /* 极小屏幕优化 */
+    .q-title { font-size: 24px; }
+    .q-prompt { font-size: 16px; }
+    
+    .sv-step { 
+        width: 26px; 
+        height: 26px; 
+        font-size: 12px;
+    }
+    
+    .emoji-btn {
+        flex-direction: column;
+        text-align: center;
+        gap: 4px;
+    }
+}
+
 /* =============== Print-friendly styles =============== */
 @media print {
     /* 白底、去阴影，打印更清晰 */
