@@ -4,7 +4,7 @@
 
 **Deployed Application**: [https://705group6.duckdns.org/](https://705group6.duckdns.org/)
 
-> ⚠️ **Important Note**: The server is currently hosted on a 2-core CPU instance. Due to computational limitations, **parallel questionnaire submissions are not supported**. We recommend exploring the admin dashboard features for the best experience.
+> ⚠️ **Important Note**: The server is currently hosted on a 2-core CPU instance. Due to computational limitations, **parallel questionnaire submissions are not supported**.
 
 ### Test Account
 For testing purposes, use the following admin account:
