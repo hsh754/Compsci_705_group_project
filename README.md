@@ -273,23 +273,23 @@ The system uses a **two-stream approach** combining facial and vocal emotion sig
 #### Fusion Strategy
 - Averages predictions from both streams
 - Emotion mapping for mental health assessment:
-  - **Positive**: Happy (0.0), Surprise (0.1), Calm (0.2)
-  - **Neutral**: Sad (0.3)
-  - **Negative**: Fear (0.5), Disgust (0.7), Angry (1.0)
+  - **Positive**: Happy (0.0), Surprise (0.1)
+  - **Neutral**:  Calm (0.2)
+  - **Negative**: Sad (0.3), Fear (0.5), Disgust (0.7), Angry (1.0)
 
 ### Supported Emotions
 1. **Angry** - High arousal negative emotion
-2. **Calm** - Low arousal positive emotion
+2. **Calm** - Low arousal neutral emotion
 3. **Disgust** - Negative emotion with rejection
-4. **Fear** - High arousal negative emotion
+4. **Fear** - Median arousal negative emotion
 5. **Happy** - High arousal positive emotion
 6. **Sad** - Low arousal negative emotion
 7. **Surprise** - High arousal neutral emotion
 
 ### Analysis Output
 - Per-video emotion classification
-- Normalized emotion scores (0-1 scale)
-- Spearman correlation with questionnaire responses
+- Normalized questionnaire scores (0-1 scale)
+- Spearman correlation with normalized questionnaire responses and emotion scores
 - Statistical significance (p-value)
 
 ---
